@@ -71,6 +71,15 @@ class MainActivity : ComponentActivity() {
                     Manifest.permission.BLUETOOTH_CONNECT,
                 )
             )
+        }else {
+            permissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.BLUETOOTH,
+                    Manifest.permission.BLUETOOTH_ADMIN,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                )
+            )
         }
 
         setContent {

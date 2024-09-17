@@ -5,8 +5,11 @@ import android.annotation.SuppressLint
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.content.Context
+import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.os.Build
+import androidx.core.content.ContextCompat
 import com.riezki.bluetoothchatapp.domain.abstraction.BluetoothController
 import com.riezki.bluetoothchatapp.domain.model.BluetoothDeviceDomain
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -52,16 +55,31 @@ class AndroidBluetoothController @Inject constructor(
     }
 
     override fun startDiscovery() {
-        if(!hasPermission(Manifest.permission.BLUETOOTH_SCAN)) {
-            return
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if(!hasPermission(Manifest.permission.BLUETOOTH_SCAN)) {
+                return
+            }
         }
 
-        context.registerReceiver(
-            foundDeviceReceiver,
-            IntentFilter(BluetoothDevice.ACTION_FOUND),
-            Manifest.permission.BLUETOOTH_CONNECT,
-            null
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            context.registerReceiver(
+                foundDeviceReceiver,
+                IntentFilter(BluetoothDevice.ACTION_FOUND),
+                Manifest.permission.BLUETOOTH_CONNECT,
+                null
+            )
+        } else {
+            ContextCompat.registerReceiver(
+                context,
+                foundDeviceReceiver,
+                IntentFilter(BluetoothDevice.ACTION_FOUND),
+                ContextCompat.RECEIVER_EXPORTED
+            )
+//            context.registerReceiver(
+//                foundDeviceReceiver,
+//                IntentFilter(BluetoothDevice.ACTION_FOUND)
+//            )
+        }
 
         updatePairedDevices()
 
@@ -69,8 +87,10 @@ class AndroidBluetoothController @Inject constructor(
     }
 
     override fun stopDiscovery() {
-        if(!hasPermission(Manifest.permission.BLUETOOTH_SCAN)) {
-            return
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if(!hasPermission(Manifest.permission.BLUETOOTH_SCAN)) {
+                return
+            }
         }
 
         bluetoothAdapter?.cancelDiscovery()
@@ -81,9 +101,12 @@ class AndroidBluetoothController @Inject constructor(
     }
 
     private fun updatePairedDevices() {
-        if(!hasPermission(Manifest.permission.BLUETOOTH_CONNECT)) {
-            return
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if(!hasPermission(Manifest.permission.BLUETOOTH_CONNECT)) {
+                return
+            }
         }
+
         bluetoothAdapter
             ?.bondedDevices
             ?.map { it.toBluetoothDeviceDomain() }
