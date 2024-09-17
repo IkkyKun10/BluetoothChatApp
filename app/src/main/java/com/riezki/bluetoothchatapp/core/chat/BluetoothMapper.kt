@@ -9,10 +9,10 @@ import com.riezki.bluetoothchatapp.domain.model.BluetoothDeviceDomain
  */
 
 @SuppressLint("MissingPermission")
-fun BluetoothDevice.toBluetoothDeviceDomain() : BluetoothDeviceDomain {
+fun BluetoothDevice.toBluetoothDeviceDomain(): BluetoothDeviceDomain {
     return BluetoothDeviceDomain(
         name = name,
         address = address,
-        bondState = bondState,
+        bondState = bondState
     )
 }

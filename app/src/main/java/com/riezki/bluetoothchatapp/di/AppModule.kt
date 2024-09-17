@@ -18,5 +18,7 @@ abstract class AppModule {
 
     @Binds
     @Singleton
-    abstract fun provideBluetoothController(bluetoothController: AndroidBluetoothController): BluetoothController
+    abstract fun provideBluetoothController(
+        bluetoothController: AndroidBluetoothController,
+    ) : BluetoothController
 }
