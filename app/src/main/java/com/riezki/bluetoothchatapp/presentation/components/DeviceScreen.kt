@@ -28,7 +28,9 @@ import com.riezki.bluetoothchatapp.presentation.BluetoothUiState
 fun DeviceScreen(
     state: BluetoothUiState,
     onStartScan: () -> Unit,
-    onStopScan: () -> Unit
+    onStopScan: () -> Unit,
+    onStartServer: () -> Unit,
+    onDeviceClick: (BluetoothDeviceDomain) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -38,7 +40,7 @@ fun DeviceScreen(
         BluetoothDeviceList(
             pairedList = state.pairedDevices,
             scannedList = state.scannedDevices,
-            onClick = {},
+            onClick = onDeviceClick,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
@@ -52,6 +54,9 @@ fun DeviceScreen(
             }
             Button(onClick = onStopScan) {
                 Text(text = "Stop scan")
+            }
+            Button(onClick = onStartServer) {
+                Text(text = "Start server")
             }
         }
     }
@@ -78,7 +83,7 @@ fun BluetoothDeviceList(
 
         items(pairedList) { device ->
             Text(
-                text = device.name ?: "No Name",
+                text = device.name ?: "(No Name)",
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { onClick(device) }
@@ -97,7 +102,7 @@ fun BluetoothDeviceList(
 
         items(scannedList) { device ->
             Text(
-                text = device.name ?: "No Name",
+                text = device.name ?: "(No Name)",
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { onClick(device) }
