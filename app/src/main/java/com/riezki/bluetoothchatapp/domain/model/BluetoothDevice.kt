@@ -7,4 +7,5 @@ data class BluetoothDevice(
     val bondState: Int? = null
 )
 
+
 typealias BluetoothDeviceDomain = BluetoothDevice
