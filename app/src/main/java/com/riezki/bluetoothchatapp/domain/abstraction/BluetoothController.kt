@@ -1,6 +1,7 @@
 package com.riezki.bluetoothchatapp.domain.abstraction
 
 import com.riezki.bluetoothchatapp.domain.model.BluetoothDeviceDomain
+import com.riezki.bluetoothchatapp.domain.model.BluetoothMessage
 import com.riezki.bluetoothchatapp.domain.util.ConnectionResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
@@ -21,6 +22,7 @@ interface BluetoothController {
 
     fun startBluetoothServer() : Flow<ConnectionResult>
     fun connectToDevice(device: BluetoothDeviceDomain) : Flow<ConnectionResult>
+    suspend fun trySendMessage(message: String): BluetoothMessage?
 
     fun closeConnection()
     fun release()

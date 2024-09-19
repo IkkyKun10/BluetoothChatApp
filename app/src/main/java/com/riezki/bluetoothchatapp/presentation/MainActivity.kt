@@ -29,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.riezki.bluetoothchatapp.domain.model.BluetoothDeviceDomain
+import com.riezki.bluetoothchatapp.presentation.components.ChatScreen
 import com.riezki.bluetoothchatapp.presentation.components.DeviceScreen
 import com.riezki.bluetoothchatapp.presentation.ui.theme.BluetoothChatAppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -151,6 +152,14 @@ class MainActivity : ComponentActivity() {
                                 CircularProgressIndicator()
                                 Text(text = "Connecting...")
                             }
+                        }
+
+                        state.isConnected -> {
+                            ChatScreen(
+                                state = state,
+                                onDisconnect = viewModel::disconnectFromDevice,
+                                onSendMessage = viewModel::sendMessage
+                            )
                         }
 
                         else -> {
